@@ -240,7 +240,7 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
       return;
     }
     this.open();
-    return this.set('open-if', false);
+    Em.run.next(null, () => this.set('open-if', false));
   }).observes('open-if').on('init'),
 
   /**
@@ -262,6 +262,6 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
       return;
     }
     this.close();
-    return this.set('close-if', false);
+    Em.run.next(null, () => this.set('close-if', false));
   }).observes('close-if')
 });
