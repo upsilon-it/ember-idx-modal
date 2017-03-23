@@ -235,12 +235,16 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @method openIf
    * @private
    */
-  openIf: (function() {
+  openIf: (function(...args) {
     if (!this.get('open-if')) {
       return;
     }
     this.open();
-    Em.run.next(null, () => this.set('open-if', false));
+    if (args.length) { // called from observer
+      Em.run.next(null, () => this.set('open-if', false));
+    } else { // called on init
+      this.set('open-if', false);
+    }
   }).observes('open-if').on('init'),
 
   /**
@@ -262,6 +266,10 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
       return;
     }
     this.close();
-    Em.run.next(null, () => this.set('close-if', false));
+    if (args.length) { // called from observer
+      Em.run.next(null, () => this.set('close-if', false));
+    } else { // called on init / directly
+      this.set('close-if', false);
+    }
   }).observes('close-if')
 });
