@@ -1,5 +1,5 @@
 //(c) 2014 Indexia, Inc.
-import Em from 'ember';
+import Component from '@ember/component';
 import WithConfigMixin from 'ember-idx-utils/mixin/with-config';
 import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
 
@@ -11,7 +11,7 @@ import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
  * @class ModalBody
  * @public
  */
-export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
+export default Component.extend(WithConfigMixin, StyleBindingsMixin, {
   classNameBindings: ['styleClasses'],
 
   /**
@@ -22,8 +22,10 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @private
    * @type String
    */
-  styleClasses: (function() {
+  styleClasses: function() {
     var _ref;
-    return (_ref = this.get('config.modal.bodyClasses')) != null ? _ref.join(" ") : undefined;
-  }).property()
+    return (_ref = this.get('config.modal.bodyClasses')) != null
+      ? _ref.join(' ')
+      : undefined;
+  }.property(),
 });

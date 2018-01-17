@@ -1,21 +1,21 @@
 //(c) 2014 Indexia, Inc.
-import Em from 'ember';
+import Component from '@ember/component';
 
 /**
  * A confirmation modal with 'Yes' & 'No' buttons
  * When 'no' is pressed the modal is just closed.
- * When 'yes' is pressed an action bound to the action on the controller set in the `confirm` property is invoked, 
+ * When 'yes' is pressed an action bound to the action on the controller set in the `confirm` property is invoked,
  * giving the controller a chance to decide whether to close the modal or not.
  *
  * @class ModalConfirm
  */
-export default Em.Component.extend({
+export default Component.extend({
   /**
    * Bound to the action on the controller to be invoked when the 'yes' button is pressed.
    * @property confirm
    * @public
    */
-  confirm: "confirm",
+  confirm: 'confirm',
 
   /**
    * The default title of the modal if not set otherwise.
@@ -42,15 +42,14 @@ export default Em.Component.extend({
   'submit-button-default-icons': 'fa fa-thumbs-o-up',
   'submit-button-execute-icons': 'fa fa-spinner fa-spin',
   actions: {
-
     /**
      * Invoked when the user clicks the "Yes" button, triggers an action on the controller.
-     * 
+     *
      * @method confirmPressed
      * @private
      */
     confirmPressed: function(setPromise) {
       return this.sendAction('confirm', setPromise);
-    }
-  }
+    },
+  },
 });

@@ -1,5 +1,5 @@
 //(c) 2014 Indexia, Inc.
-import Em from 'ember';
+import Component from '@ember/component';
 import WithConfigMixin from 'ember-idx-utils/mixin/with-config';
 import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
 
@@ -12,7 +12,7 @@ import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
  * @public
  */
 
-export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
+export default Component.extend(WithConfigMixin, StyleBindingsMixin, {
   classNameBindings: ['styleClasses', 'classes'],
 
   /**
@@ -23,10 +23,12 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @private
    * @type String
    */
-  styleClasses: (function() {
+  styleClasses: function() {
     var _ref;
-    return (_ref = this.get('config.modal.titleClasses')) != null ? _ref.join(" ") : void 0;
-  }).property(),
+    return (_ref = this.get('config.modal.titleClasses')) != null
+      ? _ref.join(' ')
+      : void 0;
+  }.property(),
 
   /**
    * Register the title within the modal
@@ -36,6 +38,8 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @private
    */
   registerInModal: function() {
-    return (this.get('parentView').setTitle(this)).on('init');
-  }
+    return this.get('parentView')
+      .setTitle(this)
+      .on('init');
+  },
 });

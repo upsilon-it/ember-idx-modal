@@ -1,5 +1,7 @@
 //(c) 2014 Indexia, Inc.
-import Em from 'ember';
+import { schedule } from '@ember/runloop';
+
+import Component from '@ember/component';
 import WithConfigMixin from 'ember-idx-utils/mixin/with-config';
 import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
 
@@ -32,7 +34,7 @@ import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
  * @public
  */
 
-export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
+export default Component.extend(WithConfigMixin, StyleBindingsMixin, {
   /**
    * Properties bound as attributes the DOM element.
    * see documentation per property.
@@ -58,36 +60,38 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @private
    * @type String
    */
-  styleClasses: (function() {
+  styleClasses: function() {
     var _ref;
-    return (_ref = this.get('config.modal.classes')) != null ? _ref.join(" ") : void 0;
-  }).property('config.modal.classes'),
+    return (_ref = this.get('config.modal.classes')) != null
+      ? _ref.join(' ')
+      : void 0;
+  }.property('config.modal.classes'),
 
   /**
    * The class name that will be set when the modal gets opened
    * @property styleOpenningClasses
    * @public
    */
-  styleOpenningClasses: (function() {
+  styleOpenningClasses: function() {
     if (this.get('did-open')) {
-      return "in";
+      return 'in';
     } else {
-      return "";
+      return '';
     }
-  }).property('did-open'),
+  }.property('did-open'),
 
   /*
    * The CSS `display` property state.
    * @property display
    * @public
    */
-  display: (function() {
+  display: function() {
     if (this.get('did-open')) {
       return 'block';
     } else {
       return 'none';
     }
-  }).property('did-open'),
+  }.property('did-open'),
 
   /**
    * `show` property is bound to the DOM element as an attribute.
@@ -134,10 +138,10 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
     this.trigger('show');
     this.sendAction('on-show', this);
     this.set('is-open', 'true');
-    return Em.run.schedule('afterRender', this, function() {
+    return schedule('afterRender', this, function() {
       this.set('did-open', 'true');
       this.trigger('shown');
-      return Em.run.schedule('afterRender', this, function() {
+      return schedule('afterRender', this, function() {
         return this.$().focus();
       });
     });
@@ -193,12 +197,12 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @method closeIfClickedOutside
    * @private
    */
-  closeIfClickedOutside: (function(e) {
+  closeIfClickedOutside: function(e) {
     if (e.target !== this.get('element')) {
       return;
     }
     return this.close();
-  }).on('click'),
+  }.on('click'),
 
   /**
    * Parameter set to true to ignore ESC keyboard event
@@ -212,14 +216,14 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @method handleKeyboard
    * @private
    */
-  handleKeyboard: (function(e) {
+  handleKeyboard: function(e) {
     if (!this.get('ignore-esc')) {
       switch (e.keyCode) {
         case 27:
           return this.close();
       }
     }
-  }).on('keyDown'),
+  }.on('keyDown'),
 
   /**
    * Consumer can bind this property for a more fine grained control over when the modal is opened,
@@ -235,13 +239,15 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @method openIf
    * @private
    */
-  openIf: (function(...args) {
+  openIf: function(...args) {
     if (!this.get('open-if')) {
       return;
     }
     this.open();
     return this.set('open-if', false);
-  }).observes('open-if').on('init'),
+  }
+    .observes('open-if')
+    .on('init'),
 
   /**
    * Consumer can bind this property for a more fine grained control over when the modal is closed,
@@ -257,11 +263,11 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @method closeIf
    * @private
    */
-  closeIf: (function(...args) {
+  closeIf: function(...args) {
     if (!this.get('close-if')) {
       return;
     }
     this.close();
     return this.set('close-if', false);
-  }).observes('close-if')
+  }.observes('close-if'),
 });

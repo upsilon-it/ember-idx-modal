@@ -1,5 +1,4 @@
 //(c) 2014 Indexia, Inc.
-import Em from 'ember';
 import Modal from './modal';
 
 /**
@@ -24,30 +23,33 @@ export default Modal.extend({
    * @method submitForm
    * @private
    */
-  submitForm: (function(e) {
+  submitForm: function(e) {
     e.preventDefault();
     this.sendAction('on-submit', this, e);
     this.set('submitted', true);
-    if (e.promise && "function" === typeof e.promise.then) {
+    if (e.promise && 'function' === typeof e.promise.then) {
       this.set('in-async', 'true');
-      return e.promise.then((function(_this) {
-        return function(r) {
-          _this.set('in-async', null);
-          return _this.close();
-        };
-      })(this), (function(_this) {
-        return function(err) {
-          _this.set('in-async', null);
-          _this.set('error', err);
-          if (_this.get('close-if-error')) {
+      return e.promise.then(
+        (function(_this) {
+          return function(r) {
+            _this.set('in-async', null);
             return _this.close();
-          }
-        };
-      })(this));
+          };
+        })(this),
+        (function(_this) {
+          return function(err) {
+            _this.set('in-async', null);
+            _this.set('error', err);
+            if (_this.get('close-if-error')) {
+              return _this.close();
+            }
+          };
+        })(this)
+      );
     } else {
       return this.close();
     }
-  }).on('submit'),
+  }.on('submit'),
   close: function() {
     this.set('error', null);
     if (!this.get('submitted')) {
@@ -55,5 +57,5 @@ export default Modal.extend({
     }
     this.set('submitted', false);
     return this._super.apply(this, arguments);
-  }
+  },
 });

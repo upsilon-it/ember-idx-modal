@@ -1,4 +1,7 @@
 //(c) 2014 Indexia, Inc.
+import { schedule } from '@ember/runloop';
+
+import Component from '@ember/component';
 import Em from 'ember';
 import Modal from './modal';
 import WithConfigMixin from 'ember-idx-utils/mixin/with-config';
@@ -15,7 +18,7 @@ import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
  * @public
  */
 
-export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
+export default Component.extend(WithConfigMixin, StyleBindingsMixin, {
   attributeBindings: ['disabled', 'type'],
   tagName: 'button',
   classNameBindings: ['styleClasses'],
@@ -29,10 +32,12 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @private
    * @type String
    */
-  styleClasses: (function() {
+  styleClasses: function() {
     var _ref;
-    return (_ref = this.get('config.modal.togglerClasses')) != null ? _ref.join(" ") : void 0;
-  }).property(),
+    return (_ref = this.get('config.modal.togglerClasses')) != null
+      ? _ref.join(' ')
+      : void 0;
+  }.property(),
 
   /**
    * Toggle the visibility of the modal that this toggler controls.
@@ -40,10 +45,10 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * @method toggleVisibility
    * @private
    */
-  toggleVisibility: (function() {
+  toggleVisibility: function() {
     this.sendAction('on-toggle', this);
     return this.get('modal').toggleVisibility();
-  }).on('click'),
+  }.on('click'),
 
   /**
    * Find the modal view and set it as a `modal` property
@@ -51,15 +56,15 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    * TODO: Assert modal existance
    * @method modalAsProperty
    */
-  modalAsProperty: (function() {
-    var modalId = this.get('modal-id'); 
+  modalAsProperty: function() {
+    var modalId = this.get('modal-id');
 
     if (modalId) {
-      return Em.run.schedule('afterRender', this, function() {
+      return schedule('afterRender', this, function() {
         return this.set('modal', Em.View.views[modalId]);
       });
     } else {
       return this.set('modal', this.nearestOfType(Modal));
     }
-  }).on('willInsertElement')
+  }.on('willInsertElement'),
 });

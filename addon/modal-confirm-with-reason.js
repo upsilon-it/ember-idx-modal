@@ -32,5 +32,5 @@ export default ModalConfirm.extend({
   /*
    * The chosen reason
    */
-  reason: void 0
+  reason: void 0,
 });
