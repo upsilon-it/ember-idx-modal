@@ -1,6 +1,6 @@
 {
-  "name": "ember-idx-modal",
-  "version": "0.2.0",
+  "name": "@upsilon/ember-idx-modal",
+  "version": "0.3.0",
   "description": "Ambitious Modal Component for Ember.js",
   "license": "ASF2",
   "author": "Indexia Technologies, ltd.",
