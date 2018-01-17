@@ -6,7 +6,7 @@ import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
 /**
  * `{{em-modal}}` component.
  *
- * Define a modal component that can be opened and closed, the modal visibility is controlled by the 
+ * Define a modal component that can be opened and closed, the modal visibility is controlled by the
  * {{#crossLink "ModalToggler"}}ModalToggler{{/crossLink}} component.
  *
  * ```handlebars
@@ -100,7 +100,7 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
    *     transition: opacity 100ms ease;
    *   }
    * ```
-   * 
+   *
    * The transition effect should be ended when the modal is gets visible, see the property `shown` for more info.
    * @property opened
    * @see 'did-open'
@@ -109,7 +109,7 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
   'is-open': false,
 
   /**
-   * A property bound to the DOM element that indicates that the modal has been made visible to the user. 
+   * A property bound to the DOM element that indicates that the modal has been made visible to the user.
    * (after the DOM element was set with `display: block;`)
    *
    * This proeprty can be used by CSS to end a transitioning effect by setting the CSS `opacity` to a higher number, for example:
@@ -240,11 +240,7 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
       return;
     }
     this.open();
-    if (args.length) { // called from observer
-      Em.run.scheduleOnce('afterRender', null, () => this.set('open-if', false));
-    } else { // called on init
-      this.set('open-if', false);
-    }
+    return this.set('open-if', false);
   }).observes('open-if').on('init'),
 
   /**
@@ -266,10 +262,6 @@ export default Em.Component.extend(WithConfigMixin, StyleBindingsMixin, {
       return;
     }
     this.close();
-    if (args.length) { // called from observer
-      Em.run.scheduleOnce('afterRender', null, () => this.set('close-if', false));
-    } else { // called on init / directly
-      this.set('close-if', false);
-    }
+    return this.set('close-if', false);
   }).observes('close-if')
 });
